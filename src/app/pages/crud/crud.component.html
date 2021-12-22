@@ -1,0 +1,12 @@
+<div [formGroup]="form">
+    Nome: <input type="string" id="nome" formControlName="nome"><br>
+    Email: <input type="email" id="email" formControlName="email" (blur)="validaInput($event, 'email')"><br>
+    Telefone: <input type="string" id="telefone" formControlName="telefone" (keyup)="mascara()" (blur)="validaInput($event, 'telefone')"><br>
+    Status:
+        <input type="radio" id="ativo" name="status" [value]="true" formControlName="status">
+        <label for="ativo">ativo</label>
+        <input type="radio" id="inativo" name="status" [value]="false" formControlName="status">
+        <label for="inativo">inativo</label><br>
+    <button [disabled]="form.invalid" id="botaoCadastrar" (click)="cadastrar()">Cadastrar</button>
+    <p>IMPORTANTE: Todos os campos são obrigatórios!</p>
+</div>

@@ -1,0 +1,9 @@
+#botaoCadastrar {
+    height: 20px;
+    width: 50px;
+    background-color: purple;
+
+    :disabled  {
+        background-color: salmon;
+    }
+}
