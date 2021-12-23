@@ -1,26 +1,57 @@
-<h2 id="titulo">Cadastro de membro</h2>
-<div [formGroup]="form">
-    Nome: <input type="string" id="nome" formControlName="nome"><br>
-    Email: <input type="email" id="email" formControlName="email" (blur)="validaInput('email')"><br>
-    Telefone: <input type="string" id="telefone" formControlName="telefone" (keyup)="mascara()" (blur)="validaInput('telefone')"><br>
-    Status:
-        <input type="radio" id="ativo" name="status" [value]="true" formControlName="status" [checked]="isAtivo">
-        <label for="ativo">ativo</label>
-        <input type="radio" id="inativo" name="status" [value]="false" formControlName="status" [checked]="isInativo">
-        <label for="inativo">inativo</label><br>
-    <button [disabled]="form.invalid" id="botaoCadastrar" (click)="acao()">Cadastrar</button>
-    <button id="botaoCancelar" (click)="cancelar()">Cancelar</button>
-    <p>IMPORTANTE: Todos os campos são obrigatórios!</p>
-    <p id="aviso_email">Insira um email válido!</p>
-    <p id="aviso_telefone">Insira um telefone válido!</p>
-</div>
+<div id="container">
+    <div>
+        <div [formGroup]="form" id="formulario">
+            <h2 id="titulo">Cadastro de cliente</h2>
 
+            <div>
+                <label for="nome">Nome:</label>
+                <input type="string" id="nome" formControlName="nome" autocomplete="off"><br>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" formControlName="email" (blur)="validaInput('email')" autocomplete="off"><br>
+            </div>
+            <div>
+                <label for="telefone">Telefone:</label>
+                <input type="string" id="telefone" formControlName="telefone" (keyup)="mascara()" (blur)="validaInput('telefone')" autocomplete="off"><br>
+            </div>
+            <div id="divStatus">
+                <span>Status:</span>
+                <div>
+                    <input type="radio" id="ativo" name="status" [value]="true" formControlName="status" [checked]="isAtivo">
+                    <label for="ativo">ativo</label>
+                    <input type="radio" id="inativo" name="status" [value]="false" formControlName="status" [checked]="isInativo">
+                    <label for="inativo">inativo</label><br>
+                </div>
+            </div>
+            <div id="divBotoes">
+                <button [disabled]="form.invalid" id="botaoCadastrar" (click)="acao()">Cadastrar</button>
+                <button id="botaoCancelar" (click)="cancelar()">Cancelar</button>
+            </div>
+        </div>
+        <div id="divAvisos">
+            <p>IMPORTANTE: Todos os campos são obrigatórios!</p>
+            <p id="aviso_email">Insira um email válido!</p>
+            <p id="aviso_telefone">Insira um telefone válido!</p>
+        </div>
+    </div>
 
-<div *ngFor="let cliente of clientes">
-    <span>{{ cliente.nome }}</span>
-    <span>{{ cliente.email }}</span>
-    <span>{{ cliente.telefone }}</span>
-    <span>{{ cliente.status }}</span>
-    <button (click)="editar(cliente)">Editar</button>
-    <button (click)="excluir(cliente.id)">Excluir</button>
+    <div id="tabela">
+        <div>
+            <span class="nomeTabela">Nome</span>
+            <span class="emailTabela">Email</span>
+            <span class="telefoneTabela">Telefone</span>
+            <span class="statusTabela">Status</span>
+            <span class="acoesTabela">Ações</span>
+
+        </div>
+        <div *ngFor="let cliente of clientes">
+            <span class="nomeTabela">{{ cliente.nome }}</span>
+            <span class="emailTabela">{{ cliente.email }}</span>
+            <span class="telefoneTabela">{{ cliente.telefone }}</span>
+            <span class="statusTabela">{{ pegaStatus(cliente.status) }}</span>
+            <button (click)="editar(cliente)">Editar</button>
+            <button (click)="excluir(cliente.id)">Excluir</button>
+        </div>
+    </div>
 </div>

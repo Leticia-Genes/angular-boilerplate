@@ -114,7 +114,7 @@ export class CrudComponent implements OnInit {
   editar(cliente: Cliente) : void {
     this.alteraTela(cliente.id.toString());
 
-    document.getElementById("titulo").textContent = "Edição de membro";
+    document.getElementById("titulo").textContent = "Edição de cliente";
     this.form.controls['nome'].setValue(cliente.nome);
     this.form.controls['email'].setValue(cliente.email);
     this.form.controls['telefone'].setValue(cliente.telefone);
@@ -151,4 +151,13 @@ export class CrudComponent implements OnInit {
     this.service.excluirCliente(id);
     location.reload();
   } 
+
+  /**
+   * Faz a transformação do status em valor booleano para a representação em string
+   * @param status - valor booleano do status do cliente
+   * @returns string com o status ativo ou inativo
+   */
+  pegaStatus(status: boolean) : string {
+    return status ? "ativo" : "inativo";
+  }
 }
