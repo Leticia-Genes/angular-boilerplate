@@ -12,6 +12,8 @@ export class CrudComponent implements OnInit {
   private id: number;
   public clientes: Cliente[];
   public form: FormGroup;
+  public isAtivo: boolean = false;
+  public isInativo: boolean = false;
 
   constructor(private fb: FormBuilder, private service: CrudService) {
     this.form = this.fb.group({
@@ -24,8 +26,8 @@ export class CrudComponent implements OnInit {
       ])],
       telefone: ['', Validators.compose([
         Validators.required,
-        Validators.minLength(14),
-        Validators.maxLength(15)
+        Validators.minLength(13),
+        Validators.maxLength(14)
       ])],
       status: ['', Validators.compose([
         Validators.required
@@ -49,9 +51,8 @@ export class CrudComponent implements OnInit {
   }
 
   /**
-   * 
-   * @param event - evento 
-   * @param id 
+   * Verifica se o conteúdo de um input é válido (ignorando o required)
+   * @param id - identificação do elemento de input a ser validado
    */
   validaInput(id: string) : void {
     const erros = this.form.controls[id].errors;
@@ -71,17 +72,31 @@ export class CrudComponent implements OnInit {
 
     value = value.replace(/\D/g,"");                    //Remove tudo o que não é dígito
     value = value.replace(/^(\d{2})(\d)/g,"($1) $2");   //Coloca parênteses em volta dos dois primeiros dígitos
-    value = value.replace(/(\d)(\d{4})$/,"$1-$2");      //Coloca hífen entre o quarto e o quinto últimos dígitos
 
     (<HTMLSelectElement>document.getElementById("telefone")).value = value;
   }
 
   /**
-   * Pega o id automático e os valores do formulário e envia para o service salvar o cliente
+   * Chama a função de inserção com o id automático e depois o incrementa, caso seja o botão de cadastrar
+   * Caso seja o botão de alterar, chama a função com o id passado pelo value do botão
    */
-  cadastrar() : void {
+  acao() : void {
+    if(document.getElementById("botaoCadastrar")) {
+      this.inserir(this.id);
+      this.id++;
+    }
+    else {
+      this.inserir(parseInt(document.getElementById("botaoAlterar").getAttribute("value")));
+    }
+  }
+
+  /**
+   * Pega os valores do formulário e o id recebido, e envia para o service salvar o cliente
+   * @param id - id do cliente a ser cadastrado ou alterado
+   */
+  inserir(id: number) : void {
     const cliente: Cliente = {
-      "id": this.id++,
+      "id": id,
       "nome": this.form.controls['nome'].value,
       "email": this.form.controls['email'].value,
       "telefone": this.form.controls['telefone'].value,
@@ -89,5 +104,42 @@ export class CrudComponent implements OnInit {
     };
 
     this.service.inserirCliente(cliente);
+    location.reload();
+  }
+
+  /**
+   * Altera os elementos da tela e insere as informações do cliente nos inputs
+   * @param cliente - interface com as informações do cliente a ser alterado
+   */
+  editar(cliente: Cliente) : void {
+    this.alteraTela(cliente.id.toString());
+
+    document.getElementById("titulo").textContent = "Edição de membro";
+    this.form.controls['nome'].setValue(cliente.nome);
+    this.form.controls['email'].setValue(cliente.email);
+    this.form.controls['telefone'].setValue(cliente.telefone);
+    this.form.controls['status'].setValue( cliente.status);
+  }
+
+  /**
+   * Altera os atributos do botão de cadastro para alteração e torna o botão de calcelamento visível
+   * Passa o id do cliente como atributo value do botão de alteração
+   * @param id - id do cliente a ser alterado
+   */
+  alteraTela(id: string) : void {
+    const botao: HTMLElement = document.getElementById("botaoCadastrar");
+    if(botao) {
+      botao.textContent = "Alterar";
+      botao.setAttribute("value", id);
+      botao.setAttribute("id", "botaoAlterar");
+      document.getElementById("botaoCancelar").style.display = "flex";
+    }
+  }
+
+  /**
+   * Recarrega a página
+   */
+  cancelar() : void {
+    location.reload();
   }
 }

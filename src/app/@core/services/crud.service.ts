@@ -48,16 +48,7 @@ export class CrudService {
     obterCliente(id: number) : Cliente {
         return JSON.parse(localStorage.getItem(id.toString()));
     }
-
-    /**
-     * Reinsere um cliente no localStorage, mantendo sua chave
-     * @param id - id/chave do cliente a ser alterado
-     * @param clienteAlterado - novos valores do cliente
-     */
-    alterarCliente(id: number, clienteAlterado: Cliente) : void {
-        localStorage.setItem(id.toString(), JSON.stringify(clienteAlterado));
-    }
-
+    
     /**
      * Remove um cliente do localStorage
      * @param id - id/chave do cliente a ser removido
