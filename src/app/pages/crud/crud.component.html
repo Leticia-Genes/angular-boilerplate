@@ -1,7 +1,7 @@
 <div [formGroup]="form">
     Nome: <input type="string" id="nome" formControlName="nome"><br>
-    Email: <input type="email" id="email" formControlName="email" (blur)="validaInput($event, 'email')"><br>
-    Telefone: <input type="string" id="telefone" formControlName="telefone" (keyup)="mascara()" (blur)="validaInput($event, 'telefone')"><br>
+    Email: <input type="email" id="email" formControlName="email" (blur)="validaInput('email')"><br>
+    Telefone: <input type="string" id="telefone" formControlName="telefone" (keyup)="mascara()" (blur)="validaInput('telefone')"><br>
     Status:
         <input type="radio" id="ativo" name="status" [value]="true" formControlName="status">
         <label for="ativo">ativo</label>
@@ -9,4 +9,14 @@
         <label for="inativo">inativo</label><br>
     <button [disabled]="form.invalid" id="botaoCadastrar" (click)="cadastrar()">Cadastrar</button>
     <p>IMPORTANTE: Todos os campos são obrigatórios!</p>
+    <p id="aviso_email">Insira um email válido!</p>
+    <p id="aviso_telefone">Insira um telefone válido!</p>
+</div>
+
+
+<div *ngFor="let cliente of clientes" id="{{ cliente.id }}" (click)="select(cliente)">
+    <span>{{ cliente.nome }}</span>
+    <span>{{ cliente.email }}</span>
+    <span>{{ cliente.telefone }}</span>
+    <span>{{ cliente.status }}</span>
 </div>
