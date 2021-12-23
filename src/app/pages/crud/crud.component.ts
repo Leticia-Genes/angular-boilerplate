@@ -142,4 +142,13 @@ export class CrudComponent implements OnInit {
   cancelar() : void {
     location.reload();
   }
+
+  /**
+   * Chama o service para deletar o cliente do localStorage usando seu id e recarrega a página
+   * @param id - id do cliente a ser excluído
+   */
+  excluir(id: number) : void {
+    this.service.excluirCliente(id);
+    location.reload();
+  } 
 }
